@@ -26,7 +26,11 @@ def _ensure_indexes():
     db["projects"].create_index([("project_id", ASCENDING)], unique=True)
     db["projects"].create_index([("user_id", ASCENDING)])
     db["activities"].create_index([("user_id", ASCENDING)])
-    db["activities"].create_index([("created_at", ASCENDING)])
+    db["activities"].create_index(
+        [("created_at", ASCENDING)],
+        expireAfterSeconds=2592000,  # 30-day TTL — matches existing "activities_ttl" index
+        name="activities_ttl",
+    )
     db["analytics"].create_index([("project_id", ASCENDING)])
     db["analytics"].create_index([("timestamp", ASCENDING)])
     db["alerts"].create_index([("user_id", ASCENDING)])
