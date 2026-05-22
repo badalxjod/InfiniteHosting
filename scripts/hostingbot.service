@@ -1,0 +1,28 @@
+[Unit]
+Description=HostingBot Telegram Bot
+After=network.target mongod.service
+Wants=mongod.service
+
+[Service]
+Type=simple
+# ── Replace with your actual user and path ──
+User=ubuntu
+WorkingDirectory=/home/ubuntu/HostingBot
+ExecStart=/home/ubuntu/HostingBot/.venv/bin/python3 /home/ubuntu/HostingBot/main.py
+
+# Environment — prefer .env file but can set here too
+EnvironmentFile=/home/ubuntu/HostingBot/.env
+
+# Restart policy
+Restart=on-failure
+RestartSec=10
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=hostingbot
+
+[Install]
+WantedBy=multi-user.target
